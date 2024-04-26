@@ -13,10 +13,8 @@
 		"vscode": {
 			"extensions": [
 				"ms-azuretools.vscode-azurefunctions",
-				"ms-azuretools.vscode-azurelogicapps",
 				"github.copilot-chat",
 				"github.copilot",
-				"ms-vscode.powershell",
 				"ms-azuretools.vscode-azureresourcegroups",
 				"ms-azuretools.vscode-azurestaticwebapps",
 				"github.vscode-github-actions",
