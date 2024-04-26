@@ -1,0 +1,44 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/typescript-node
+{
+	"name": "Copilot Dashboard",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"build": {
+		// Path is relative to the devcontainer.json file.
+		"dockerfile": "Dockerfile"
+	},
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "./.devcontainer/scripts/post-create.sh",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"ms-azuretools.vscode-azurefunctions",
+				"ms-azuretools.vscode-azurelogicapps",
+				"github.copilot-chat",
+				"github.copilot",
+				"ms-vscode.powershell",
+				"ms-azuretools.vscode-azureresourcegroups",
+				"ms-azuretools.vscode-azurestaticwebapps",
+				"github.vscode-github-actions",
+				"redhat.vscode-yaml",
+				"ms-azuretools.vscode-bicep",
+				"msazurermtools.azurerm-vscode-tools",
+				"ms-vscode.azurecli",
+				"humao.rest-client"
+			],
+			"settings": {
+				"dotnetAcquisitionExtension.existingDotnetPath": [
+					{
+						"extensionId": "ms-azuretools.vscode-bicep",
+						"path": "/usr/bin/dotnet"
+					},
+					{
+						"extensionId": "ms-azuretools.vscode-bicep",
+						"path": "C:\\Program Files\\dotnet\\dotnet.exe"
+					}
+				]
+			}
+		}
+	},
+	"postCreateCommand": "./.devcontainer/scripts/post-create.sh"
+}
