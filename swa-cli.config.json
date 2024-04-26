@@ -6,7 +6,11 @@
       "apiLocation": "api",
       "outputLocation": "dist",
       "apiLanguage": "node",
-      "apiVersion": "18"
+      "apiVersion": "18",
+      "appBuildCommand": "npm run build",
+      "apiBuildCommand": "npm run build",
+      "run": "npm run dev",
+      "appDevserverUrl": "http://localhost:5173"
     }
   }
 }
