@@ -1,9 +1,9 @@
 import { ChartProps } from "@/types";
 import { Card, CardHeader, CardContent, Divider } from "@mui/material";
-import { ResponsiveContainer, LineChart, Line, CartesianGrid, Tooltip, XAxis, YAxis } from "recharts";
+import { ResponsiveContainer, LineChart, Line, CartesianGrid, Tooltip, XAxis, YAxis, Legend } from "recharts";
 
 export default function TotalAcceptances({ data, sx }: ChartProps) {
-    const totalAcceptancesData = data.map(entry => ({ day: entry.day, totalAcceptances: entry.total_acceptances_count }));
+    const totalAcceptancesData = data.map(entry => ({ day: entry.day, totalAcceptances: entry.total_acceptances_count, totalSuggestions: entry.total_suggestions_count }));
 
     return (
         <Card sx={sx} variant="outlined">
@@ -16,10 +16,11 @@ export default function TotalAcceptances({ data, sx }: ChartProps) {
                     <LineChart data={totalAcceptancesData}>
                         <CartesianGrid strokeDasharray="3 3" />
                         <Tooltip />
-                        <Line type="monotone" dataKey="totalActiveUsers" stroke="#ff5733" />
-                        <XAxis dataKey="day" format={"mm/dd"} />
+                        <XAxis dataKey="day" />
                         <YAxis />
-                        <Line type="monotone" dataKey="totalAcceptances" stroke="#82ca9d" />
+                        <Legend />
+                        <Line type="monotone" dataKey="totalAcceptances" stroke="#8884d8" />
+                        <Line type="monotone" dataKey="totalSuggestions" stroke="#82ca9f" />
                     </LineChart>
                 </ResponsiveContainer>
             </CardContent>

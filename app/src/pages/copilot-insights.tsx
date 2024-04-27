@@ -5,6 +5,8 @@ import { useEffect, useState } from 'react';
 import TotalActiveUsers from '../components/copilot-insights/total-active-users';
 import Grid from '@mui/material/Unstable_Grid2';
 import PopularEditors from '../components/copilot-insights/popular-editors';
+import PopularLanguages from '../components/copilot-insights/popular-languages';
+import TotalAcceptancesByLanguages from '../components/copilot-insights/total-acceptances-by-language';
 
 const org = 'appdevgbb';
 
@@ -35,10 +37,20 @@ export default function CopilotInsights() {
         <TotalActiveUsers data={data} />
       </Grid>
 
+      <Grid xs={12}>
+        <TotalAcceptancesByLanguages data={data} />
+      </Grid>
+
       <Grid lg={3} sm={6} xs={12}>
         {/* Total Suggestions Line Chart */}
         <PopularEditors data={data} />
       </Grid>
+
+      <Grid lg={3} sm={6} xs={12}>
+        <PopularLanguages data={data} />
+      </Grid>
+
+
     </Grid>
   )
 }
