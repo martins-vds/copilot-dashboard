@@ -1,3 +1,10 @@
+import { SxProps } from "@mui/material";
+
+export interface ChartProps {
+    data: CopilotUsageData[];
+    sx?: SxProps;
+}
+
 /**
  * Summary of Copilot usage.
  */
