@@ -1,7 +1,7 @@
 /**
  * Summary of Copilot usage.
  */
-export interface Usage {
+export interface CopilotUsageData {
     /**
      * Breakdown of Copilot code completions usage by language and editor
      */

@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import Index from './pages/index.tsx'
 import {
   createBrowserRouter,
   RouterProvider,
@@ -9,13 +8,14 @@ import {
 import './index.css'
 import Layout from './components/layout.tsx';
 import { CssBaseline } from '@mui/material';
+import CopilotInsights from './pages/copilot-insights.tsx';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
     children: [
-      { index: true, element: <Index /> },
+      { index: true, element: <CopilotInsights /> },
     ],
   },
 ]);
