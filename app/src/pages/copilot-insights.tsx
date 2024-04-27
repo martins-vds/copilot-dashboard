@@ -23,6 +23,7 @@ export default function CopilotInsights() {
 
     fetchData();
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [org]);
 
   return (
