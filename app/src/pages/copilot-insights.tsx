@@ -97,7 +97,7 @@ export default function CopilotInsights() {
   useEffect(() => {
     function fetchData() {
       fetchOrgUsageData(org)
-        .then(data => setData(prevData => [...prevData, ...data]))
+        .then(data => setData(data))
         .catch(console.error);
     }
 
