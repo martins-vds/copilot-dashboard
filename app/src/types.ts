@@ -72,7 +72,7 @@ export interface Breakdown {
     /**
      * The editor in which Copilot suggestions were shown to users for the specified language.
      */
-    editor?: string;
+    editor: string;
     /**
      * The language in which Copilot suggestions were shown to users in the specified editor.
      */

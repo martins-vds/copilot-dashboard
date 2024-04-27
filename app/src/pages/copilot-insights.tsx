@@ -6,8 +6,9 @@ import TotalActiveUsers from '../components/copilot-insights/total-active-users'
 import Grid from '@mui/material/Unstable_Grid2';
 import PopularEditors from '../components/copilot-insights/popular-editors';
 
+const org = 'appdevgbb';
+
 export default function CopilotInsights() {
-  const [org, setOrg] = useState('appdevgbb');
   const [data, setData] = useState<CopilotUsageData[]>([]);
   const { fetchOrgUsageData } = useApi();
 
