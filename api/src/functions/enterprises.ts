@@ -1,15 +1,31 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
+import { github } from "../github";
 
 export async function enterprises(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
-    context.log(`Http function processed request for url "${request.url}"`);
+    const user = "martins-vds";
+    const query = `
+    query($user_login:String!){
+        user(login: $user_login){
+          enterprises(first: 10){
+            nodes{
+              slug
+            }
+          }
+        }
+    }
+    `
 
-    const name = request.query.get('name') || await request.text() || 'world';
+    const response = await github.graphql(query, {
+        user_login: user
+    }) as any;
 
-    return { body: `Hello, ${name}!` };
+    const enterprises = response.data.user.enterprises.nodes.map((enterprise: any) => enterprise.slug);
+
+    return { body: JSON.stringify(enterprises), headers: { 'Content-Type': 'application/json' } };
 };
 
 app.http('enterprises', {
-    methods: ['GET', 'POST'],
+    methods: ['GET'],
     authLevel: 'anonymous',
     handler: enterprises
 });

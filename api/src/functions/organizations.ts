@@ -1,15 +1,21 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
+import { github } from "../github";
 
 export async function organizations(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
-    context.log(`Http function processed request for url "${request.url}"`);
+    const response = await github.request('GET /organizations', {
+        headers: {
+            'X-GitHub-Api-Version': '2022-11-28'
+        }
+    })
 
-    const name = request.query.get('name') || await request.text() || 'world';
+    const organizations = response.data.map((org: any) => org.login)
 
-    return { body: `Hello, ${name}!` };
+    return { body: organizations, headers: { 'Content-Type': 'application/json' } };
 };
 
 app.http('organizations', {
-    methods: ['GET', 'POST'],
+    methods: ['GET'],
+    route: 'orgs',
     authLevel: 'anonymous',
     handler: organizations
 });
