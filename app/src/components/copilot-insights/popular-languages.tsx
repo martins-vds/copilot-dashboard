@@ -1,4 +1,4 @@
-import { ChartProps } from "@/types";
+import { ChartProps } from "@/types/ChartProps";
 import { Card, CardHeader, Divider, CardContent, List, ListItem, ListItemText } from "@mui/material";
 
 export default function PopularLanguages({ data, sx }: ChartProps) {

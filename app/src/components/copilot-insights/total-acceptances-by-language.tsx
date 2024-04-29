@@ -1,4 +1,4 @@
-import { ChartProps } from "@/types";
+import { ChartProps } from "@/types/ChartProps";
 import { Card, CardHeader, Divider, CardContent } from "@mui/material";
 import { ResponsiveContainer, BarChart, CartesianGrid, XAxis, YAxis, Legend, Bar, Tooltip } from "recharts";
 
@@ -47,7 +47,7 @@ export default function TotalAcceptancesByLanguages({ data, sx }: ChartProps) {
                         <CartesianGrid strokeDasharray="3 3" />
                         <XAxis dataKey="language" angle={45} reversed tickMargin={10} tick={{
                             textAnchor: 'start',
-                        }} />
+                        }}/>
                         <YAxis />
                         <Tooltip />
                         <Legend verticalAlign="top" />

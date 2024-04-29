@@ -1,4 +1,5 @@
-import { ChartProps } from "@/types";
+import { ChartProps } from "@/types/ChartProps";
+import { formatDate } from "../../utils/format-date";
 import { Card, CardHeader, CardContent, Divider } from "@mui/material";
 import { ResponsiveContainer, LineChart, Line, YAxis, XAxis, CartesianGrid, Tooltip } from "recharts";
 
@@ -17,7 +18,7 @@ export default function TotalActiveUsers({ data, sx }: ChartProps) {
                         <CartesianGrid strokeDasharray="3 3" />
                         <Tooltip />
                         <Line type="monotone" dataKey="totalActiveUsers" stroke="#ff5733" />
-                        <XAxis dataKey="day" />
+                        <XAxis dataKey="day" tickFormatter={formatDate} />
                         <YAxis />
                     </LineChart>
                 </ResponsiveContainer>

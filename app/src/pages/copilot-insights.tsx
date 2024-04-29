@@ -1,29 +1,66 @@
-import TotalAcceptances from '../components/copilot-insights/total-acceptances';
-import { useApi } from '../hooks/use-api';
-import { CopilotUsageData } from '@/types';
 import { useEffect, useState } from 'react';
-import TotalActiveUsers from '../components/copilot-insights/total-active-users';
+import { FormControl, InputLabel, MenuItem, Select, Stack } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
+import { useApi } from '../hooks/use-api';
+import { CopilotUsageData } from "@/types/CopilotUsageData";
+import { Team } from '@/types/Team';
+import { Notification } from '@/types/Notification';
+import AsyncAutocomplete from '../components/async-autocomplete';
+import ToastNotification from '../components/notification';
+import TotalAcceptances from '../components/copilot-insights/total-acceptances';
+import TotalActiveUsers from '../components/copilot-insights/total-active-users';
+import TotalAcceptancesByLanguages from '../components/copilot-insights/total-acceptances-by-language';
 import PopularEditors from '../components/copilot-insights/popular-editors';
 import PopularLanguages from '../components/copilot-insights/popular-languages';
-import TotalAcceptancesByLanguages from '../components/copilot-insights/total-acceptances-by-language';
-import { Stack } from '@mui/material';
-import AsyncAutocomplete from '../components/async-autocomplete';
+import { usage_types } from '../types/usage-types';
+
 
 export default function CopilotInsights() {
+  const { fetchEnterprises, fetchEnterpriseUsageData, fetchOrgUsageData, fetchOrgs, fetchTeams, fetchTeamUsageData } = useApi();
+
+  const [selectedUsage, setSelectedUsage] = useState<string>('Enterprises');
   const [enterprise, setEnterprise] = useState<string>('');
   const [org, setOrg] = useState<string>('');
+  const [team, setTeam] = useState<string>('');
 
   const [data, setData] = useState<CopilotUsageData[]>([]);
-  const { fetchOrgUsageData, fetchOrgs, fetchEnterprises, fetchEnterpriseUsageData } = useApi();
+
+  const [notification, setNotification] = useState<Notification>({
+    message: undefined,
+    type: 'success'
+  });
 
   useEffect(() => {
     function fetchData() {
-      if(!org) return;
+      if (!enterprise || selectedUsage !== 'Enterprises') return;
+
+      fetchEnterpriseUsageData(enterprise)
+        .then(data => setData(data))
+        .catch((error) => setNotification(
+          {
+            message: `Failed to fetch usage data for enterprise '${enterprise}': ${error.message}`,
+            type: 'error'
+          }
+        ));
+    }
+
+    fetchData();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [enterprise]);
+
+  useEffect(() => {
+    function fetchData() {
+      if (!org || selectedUsage !== 'Organizations') return;
 
       fetchOrgUsageData(org)
         .then(data => setData(data))
-        .catch(console.error);
+        .catch((error) => setNotification(
+          {
+            message: `Failed to fetch usage data for organization '${org}': ${error.message}`,
+            type: 'error'
+          }
+        ));
     }
 
     fetchData();
@@ -33,37 +70,67 @@ export default function CopilotInsights() {
 
   useEffect(() => {
     function fetchData() {
-      if(!enterprise) return;
+      if (!org || !team) return;
 
-      fetchEnterpriseUsageData(enterprise)
+      fetchTeamUsageData(org, team)
         .then(data => setData(data))
-        .catch(console.error);
+        .catch((error) => setNotification(
+          {
+            message: `Failed to fetch usage data for team '${team}' in organization '${org}': ${error.message}`,
+            type: 'error'
+          }
+        ));
     }
 
     fetchData();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enterprise]);
+  }, [team]);
 
   return (
     <>
+      <ToastNotification notification={notification} />
       <Stack spacing={3} gap={2} direction={'row'} sx={{
-        marginBottom: 3    
+        marginBottom: 3
       }}>
-        <AsyncAutocomplete
+        <FormControl>
+          <InputLabel id="usage-by-label">Usage By</InputLabel>
+          <Select
+            labelId="usage-by-label"
+            value={selectedUsage}
+            label="Usage By"
+            onChange={(event) => setSelectedUsage(event.target.value)}
+          >
+            {usage_types.map((item) => (
+              <MenuItem key={item} value={item}>
+                {item}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        {selectedUsage === 'Enterprises' && (<AsyncAutocomplete
           label="Enterprises"
           loadOptions={fetchEnterprises}
           getOptionLabel={(option) => option as string}
-          onChange={(event, value) => setEnterprise(value as string)}
+          onChange={(_, value) => setEnterprise(value as string)}
           isOptionEqualToValue={(option, value) => option === value}
-        />
-        <AsyncAutocomplete
+        />)}
+        {selectedUsage !== 'Enterprises' && (<AsyncAutocomplete
           label="Organizations"
           loadOptions={fetchOrgs}
           getOptionLabel={(option) => option as string}
-          onChange={(event, value) => setOrg(value as string)}
+          onChange={(_, value) => setOrg(value as string)}
           isOptionEqualToValue={(option, value) => option === value}
-        />
+        />)}
+        {selectedUsage === 'Teams' && (
+          <AsyncAutocomplete
+            label="Teams"
+            loadOptions={() => fetchTeams(org)}
+            getOptionLabel={(option) => (option as Team).name as string}
+            onChange={(_, value) => setTeam((value as Team).slug as string)}
+            isOptionEqualToValue={(option, value) => option === value}
+          />
+        )}
       </Stack>
       <Grid container spacing={3}>
         <Grid lg={6} sm={6} xs={12}>

@@ -1,7 +1,6 @@
 import { Box, Container } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import MainNav from "./main-nav";
-import SideNav from "./side-nav";
 
 export default function Layout() {
     return (
@@ -13,15 +12,15 @@ export default function Layout() {
                 minHeight: '100%',
             }}
         >
-            <SideNav />
-            <Box sx={{ display: 'flex', flex: '1 1 auto', flexDirection: 'column', pl: { lg: '250px' } }}>
+            <Box sx={{ display: 'flex', flex: '1 1 auto', flexDirection: 'column' }}>
                 <MainNav />
                 <main>
-                    <Container maxWidth="xl" sx={{ py: '64px' }}>
+                    <Container maxWidth="lg">
                         <Outlet />
                     </Container>
                 </main>
             </Box>
+            
         </Box>
     )
 }
