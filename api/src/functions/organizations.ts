@@ -7,7 +7,9 @@ export async function organizations(request: HttpRequest, context: InvocationCon
     const token = getToken(request);
 
     return withErrorHandler(async () => {
-        const response = await github.client(token).paginate(github.client(token).rest.orgs.listForAuthenticatedUser, { per_page: 100 })
+        const client = github.client(token);
+        const { data: { login } } = await client.rest.users.getAuthenticated();
+        const response = await client.paginate(client.rest.orgs.listForUser, { per_page: 100, username: login })
 
         const organizations = response.map((org: any) => org.login)
 
