@@ -1,7 +1,12 @@
+import { useGitHubAuth } from "../store/reducer/use-github-auth";
 import { CopilotUsageData } from "@/types/CopilotUsageData";
 
-const doFetch = async (url: string) => {
-    const response = await fetch(url);
+const doFetch = async (url: string, token: string) => {
+    const response = await fetch(url, {
+        headers: {
+            'Authorization': `${token}`
+        }    
+    });
     
     if (!response.ok) {
         throw new Error(response.statusText);
@@ -11,28 +16,30 @@ const doFetch = async (url: string) => {
 }
 
 export function useApi() {
+    const { token } = useGitHubAuth();
+
     async function fetchEnterprises() : Promise<string[]> {
-        return await doFetch('api/enterprises');
+        return await doFetch('api/enterprises', token);
     }
 
     async function fetchEnterpriseUsageData(enterprise: string) : Promise<CopilotUsageData[]> {
-        return await doFetch(`api/enterprises/${enterprise}/copilot/usage`);
+        return await doFetch(`api/enterprises/${enterprise}/copilot/usage`, token);
     }
 
     async function fetchOrgUsageData(org: string) : Promise<CopilotUsageData[]> {
-        return await doFetch(`api/orgs/${org}/copilot/usage`);
+        return await doFetch(`api/orgs/${org}/copilot/usage`, token);
     }
 
     async function fetchOrgs() : Promise<string[]> {
-        return await doFetch('api/orgs');
+        return await doFetch('api/orgs', token);
     }
 
     async function fetchTeams(org: string) : Promise<string[]> {
-        return await doFetch(`api/orgs/${org}/teams`);
+        return await doFetch(`api/orgs/${org}/teams`, token);
     }
 
     async function fetchTeamUsageData(org: string, team: string) : Promise<CopilotUsageData[]> {
-        return await doFetch(`api/orgs/${org}/teams/${team}/copilot/usage`);
+        return await doFetch(`api/orgs/${org}/teams/${team}/copilot/usage`, token);
     }
 
     return {

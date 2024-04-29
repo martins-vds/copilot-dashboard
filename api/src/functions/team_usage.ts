@@ -1,12 +1,15 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import { github, withErrorHandler } from "../github";
+import { getToken } from "../utils";
 
 export async function team_usage(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+    const token = getToken(request);
+
     const org = request.params.org;
     const team_slug = request.params.team_slug;
 
     return withErrorHandler(async () => {
-        const response = await github.request('GET /orgs/{org}/team/{team_slug}/copilot/usage', {
+        const response = await github.client(token).request('GET /orgs/{org}/team/{team_slug}/copilot/usage', {
             org: org,
             team_slug: team_slug,
             headers: {

@@ -1,9 +1,13 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import { github, withErrorHandler } from "../github";
+import { getToken } from "../utils";
+
 
 export async function organizations(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+    const token = getToken(request);
+
     return withErrorHandler(async () => {
-        const response = await github.paginate(github.rest.orgs.listForAuthenticatedUser, { per_page: 100 })
+        const response = await github.client(token).paginate(github.client(token).rest.orgs.listForAuthenticatedUser, { per_page: 100 })
 
         const organizations = response.map((org: any) => org.login)
 

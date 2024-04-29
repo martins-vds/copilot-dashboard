@@ -1,4 +1,5 @@
-import { Stack, Avatar, Container, AppBar, Toolbar, Box } from "@mui/material";
+import { Stack, Container, AppBar, Toolbar, Box } from "@mui/material";
+import GithubLoginButton from "./github-login-button";
 
 export default function MainNav() {
 
@@ -10,6 +11,7 @@ export default function MainNav() {
                 position="fixed"
                 component="header"                
                 variant="outlined"
+                color="default"
             >
                 <Container maxWidth={"lg"}>
                     <Stack
@@ -21,10 +23,7 @@ export default function MainNav() {
                             flexGrow: 1,
                         }}></Box>                        
                         <Stack sx={{ alignItems: 'center' }} direction="row" spacing={2}>
-                            <Avatar
-                                src="/assets/avatar.png"
-                                sx={{ cursor: 'pointer' }}
-                            />
+                            <GithubLoginButton />
                         </Stack>
                     </Stack>
                 </Container>

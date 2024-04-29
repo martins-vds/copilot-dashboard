@@ -1,13 +1,17 @@
-import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
+import { app, HttpRequest, HttpResponseInit, input, InvocationContext } from "@azure/functions";
 import { github, withErrorHandler } from "../github";
+import { getToken } from "../utils";
+
 
 export async function enterprises(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+  const token = getToken(request);
+
   const {
     data: { login },
-  } = await github.rest.users.getAuthenticated();
+  } = await github.client(token).rest.users.getAuthenticated();
 
   return withErrorHandler(async () => {
-    const response = await github.request("POST /graphql", {
+    const response = await github.client(token).request("POST /graphql", {
       headers: {
         'X-GitHub-Api-Version': '2022-11-28'
       },
