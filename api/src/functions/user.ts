@@ -9,7 +9,7 @@ export async function user(request: HttpRequest, context: InvocationContext): Pr
         const user = await github.client(token).rest.users.getAuthenticated();
 
         return { body: JSON.stringify(user.data), headers: { 'Content-Type': 'application/json' } };
-    });
+    }, context.error);
 };
 
 app.http('user', {

@@ -15,7 +15,7 @@ export async function organization_usage(request: HttpRequest, context: Invocati
         })
 
         return { body: JSON.stringify(response.data), headers: { 'Content-Type': 'application/json' } };
-    });
+    }, context.error);
 };
 
 app.http('organization_usage', {

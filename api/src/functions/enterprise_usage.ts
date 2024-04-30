@@ -16,7 +16,7 @@ export async function enterprise_usage(request: HttpRequest, context: Invocation
         })
 
         return { body: JSON.stringify(response.data), headers: { 'Content-Type': 'application/json' } };
-    });
+    }, context.error);
 };
 
 app.http('enterprise_usage', {

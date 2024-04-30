@@ -18,7 +18,7 @@ export async function team_usage(request: HttpRequest, context: InvocationContex
         })
 
         return { body: JSON.stringify(response.data), headers: { 'Content-Type': 'application/json' } };
-    });
+    }, context.error);
 };
 
 app.http('team_usage', {

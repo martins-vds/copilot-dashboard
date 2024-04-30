@@ -23,7 +23,7 @@ export async function teams(request: HttpRequest, context: InvocationContext): P
         })
     
         return { body: JSON.stringify(teams), headers: { 'Content-Type': 'application/json' } };
-    });
+    }, context.error);
 };
 
 app.http('teams', {

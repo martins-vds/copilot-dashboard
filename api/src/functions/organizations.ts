@@ -14,7 +14,7 @@ export async function organizations(request: HttpRequest, context: InvocationCon
         const organizations = response.map((org: any) => org.login)
 
         return { body: JSON.stringify(organizations), headers: { 'Content-Type': 'application/json' } };
-    });
+    }, context.error);
 };
 
 app.http('organizations', {

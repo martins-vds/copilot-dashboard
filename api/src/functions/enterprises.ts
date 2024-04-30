@@ -5,13 +5,14 @@ import { getToken } from "../utils";
 
 export async function enterprises(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
   const token = getToken(request);
+  const client = github.client(token);
 
   return withErrorHandler(async () => {
     const {
       data: { login },
-    } = await github.client(token).rest.users.getAuthenticated();
+    } = await client.rest.users.getAuthenticated();
 
-    const response = await github.client(token).request("POST /graphql", {
+    const response = await client.request("POST /graphql", {
       headers: {
         'X-GitHub-Api-Version': '2022-11-28'
       },
@@ -31,7 +32,7 @@ export async function enterprises(request: HttpRequest, context: InvocationConte
     const enterprises = response.data.data.user.enterprises.nodes.map((enterprise: any) => enterprise.slug);
 
     return { body: JSON.stringify(enterprises), headers: { 'Content-Type': 'application/json' } };
-  });
+  }, context.error);
 };
 
 app.http('enterprises', {
