@@ -16,7 +16,7 @@ export function useGitHubAuth() {
 
     function logout() {
         navigate("/");
-        dispatch({ type: "LOGOUT" });        
+        dispatch({ type: "LOGOUT" });
     }
 
     async function createToken(code: string) {
@@ -46,8 +46,13 @@ export function useGitHubAuth() {
                 Authorization: token,
             },
         });
-        const user = await response.json();
-        dispatch({ type: "LOGIN", payload: { isLoggedIn: true, user: user } });
+
+        if (response.ok) {
+            const user = await response.json();
+            dispatch({ type: "LOGIN", payload: { isLoggedIn: true, user: user } });
+        } else {
+            dispatch({ type: "LOGOUT" });
+        }
     }
 
     return {
