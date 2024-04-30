@@ -11,14 +11,16 @@ import { CssBaseline } from '@mui/material';
 import CopilotInsights from './pages/copilot-insights.tsx';
 import { GitHubAuthProvider } from './store/reducer/github-auth-provider.tsx';
 import GitHubCallback from './pages/github-callback.tsx';
+import Landing from './pages/landing.tsx';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
     children: [
-      { index: true, element: <CopilotInsights /> },
-    ],    
+      { index: true, element: <Landing /> },
+      { path: "copilot-insights", element: <CopilotInsights /> }
+    ],
   },
   {
     path: "/github/callback",

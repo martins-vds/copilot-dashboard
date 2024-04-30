@@ -14,6 +14,7 @@ export function useGitHubAuth() {
 
     function logout() {
         dispatch({ type: "LOGOUT" });
+        window.location.href = "/";
     }
 
     async function createToken(code: string) {

@@ -13,9 +13,11 @@ import TotalAcceptancesByLanguages from '../components/copilot-insights/total-ac
 import PopularEditors from '../components/copilot-insights/popular-editors';
 import PopularLanguages from '../components/copilot-insights/popular-languages';
 import { usage_types } from '../types/usage-types';
+import { useGitHubAuth } from '../store/reducer/use-github-auth';
 
 
 export default function CopilotInsights() {
+  const { isLoggedIn } = useGitHubAuth();
   const { fetchEnterprises, fetchEnterpriseUsageData, fetchOrgUsageData, fetchOrgs, fetchTeams, fetchTeamUsageData } = useApi();
 
   const [selectedUsage, setSelectedUsage] = useState<string>('Enterprises');
@@ -29,6 +31,10 @@ export default function CopilotInsights() {
     message: undefined,
     type: 'success'
   });
+
+  if(!isLoggedIn) {
+    window.location.href = '/';
+  }
 
   useEffect(() => {
     function fetchData() {
