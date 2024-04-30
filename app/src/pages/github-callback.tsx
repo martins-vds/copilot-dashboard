@@ -1,4 +1,4 @@
-import { useGitHubAuth } from "../store/reducer/use-github-auth";
+import { useGitHubAuth } from "../hooks/use-github-auth";
 import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -19,6 +19,7 @@ export default function GitHubCallback() {
             createToken(code);
             navigate(redirect_url);
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     if (isLoggedIn) {

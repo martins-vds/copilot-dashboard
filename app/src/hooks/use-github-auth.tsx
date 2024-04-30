@@ -1,10 +1,12 @@
 import { useContext } from "react";
-import { github_config } from "./github-config";
-import { GitHubContext, GitHubDispatchContext } from "./github-auth-provider";
+import { github_config } from "../store/reducer/github-config";
+import { GitHubContext, GitHubDispatchContext } from "../store/reducer/github-auth-provider";
+import { useNavigate } from "react-router-dom";
 
 export function useGitHubAuth() {
     const { isLoggedIn, user, token, redirect_url } = useContext(GitHubContext);
     const dispatch = useContext(GitHubDispatchContext);
+    const navigate = useNavigate();
 
     function login(redirect_url: string = "/") {
         const redirect_uri = encodeURIComponent(`${window.location.origin}${github_config.callback_url}`);
@@ -13,8 +15,8 @@ export function useGitHubAuth() {
     }
 
     function logout() {
-        dispatch({ type: "LOGOUT" });
-        window.location.href = "/";
+        navigate("/");
+        dispatch({ type: "LOGOUT" });        
     }
 
     async function createToken(code: string) {
@@ -30,17 +32,28 @@ export function useGitHubAuth() {
                 }),
             }
         );
-        
+
         const { token } = await response.json();
 
         dispatch({ type: "SET_TOKEN", payload: token });
+
+        setUser(token);
+    }
+
+    async function setUser(token: string) {
+        const response = await fetch("/api/user", {
+            headers: {
+                Authorization: token,
+            },
+        });
+        const user = await response.json();
+        dispatch({ type: "LOGIN", payload: { isLoggedIn: true, user: user } });
     }
 
     return {
         isLoggedIn,
         user,
         token,
-        token_endpoint: github_config.token_endpoint,
         redirect_url,
         login,
         logout,

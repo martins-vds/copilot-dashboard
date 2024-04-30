@@ -8,10 +8,11 @@ import {
 import './index.css'
 import Layout from './components/layout.tsx';
 import { CssBaseline } from '@mui/material';
-import CopilotInsights from './pages/copilot-insights.tsx';
+import Dashboard from './pages/dashboard.tsx';
 import { GitHubAuthProvider } from './store/reducer/github-auth-provider.tsx';
 import GitHubCallback from './pages/github-callback.tsx';
 import Landing from './pages/landing.tsx';
+import AuthenticationGuard from './components/auth/authentication-guard.tsx';
 
 const router = createBrowserRouter([
   {
@@ -19,7 +20,7 @@ const router = createBrowserRouter([
     element: <Layout />,
     children: [
       { index: true, element: <Landing /> },
-      { path: "copilot-insights", element: <CopilotInsights /> }
+      { path: "dashboard", element: <AuthenticationGuard component={Dashboard}/> }
     ],
   },
   {

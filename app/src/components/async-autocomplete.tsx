@@ -7,9 +7,10 @@ interface AsyncAutocompleteProps {
     getOptionLabel?: (option: unknown) => string;
     loadOptions: () => Promise<unknown[]>;
     onChange?: (event: React.ChangeEvent<unknown>, value: unknown) => void;
+    onError?: (error: unknown) => void;
 }
 
-export default function AsyncAutocomplete({ label, isOptionEqualToValue, getOptionLabel, loadOptions, onChange }: AsyncAutocompleteProps) {
+export default function AsyncAutocomplete({ label, isOptionEqualToValue, getOptionLabel, loadOptions, onChange, onError }: AsyncAutocompleteProps) {
     const [open, setOpen] = useState(false);
     const [options, setOptions] = useState<unknown[]>([]);
     const loading = open && options.length === 0;
@@ -22,17 +23,23 @@ export default function AsyncAutocomplete({ label, isOptionEqualToValue, getOpti
         }
 
         (async () => {
-            const newOptions = await loadOptions();
-
-            if (active) {
-                setOptions([...newOptions]);
+            try {
+                const newOptions = await loadOptions();
+    
+                if (active) {
+                    setOptions([...newOptions]);
+                }
+            } catch (error) {
+                if(onError) {
+                    onError(error);
+                }
             }
         })();
 
         return () => {
             active = false;
         };
-    }, [loading, loadOptions]);
+    }, [loading, loadOptions, onError]);
 
     useEffect(() => {
         if (!open) {

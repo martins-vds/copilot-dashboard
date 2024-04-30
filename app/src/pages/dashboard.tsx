@@ -7,34 +7,25 @@ import { Team } from '@/types/Team';
 import { Notification } from '@/types/Notification';
 import AsyncAutocomplete from '../components/async-autocomplete';
 import ToastNotification from '../components/notification';
-import TotalAcceptances from '../components/copilot-insights/total-acceptances';
-import TotalActiveUsers from '../components/copilot-insights/total-active-users';
-import TotalAcceptancesByLanguages from '../components/copilot-insights/total-acceptances-by-language';
-import PopularEditors from '../components/copilot-insights/popular-editors';
-import PopularLanguages from '../components/copilot-insights/popular-languages';
+import TotalAcceptances from '../components/dashboard/total-acceptances';
+import TotalActiveUsers from '../components/dashboard/total-active-users';
+import TotalAcceptancesByLanguages from '../components/dashboard/total-acceptances-by-language';
+import PopularEditors from '../components/dashboard/popular-editors';
+import PopularLanguages from '../components/dashboard/popular-languages';
 import { usage_types } from '../types/usage-types';
-import { useGitHubAuth } from '../store/reducer/use-github-auth';
 
-
-export default function CopilotInsights() {
-  const { isLoggedIn } = useGitHubAuth();
+export default function Dashboard() {
   const { fetchEnterprises, fetchEnterpriseUsageData, fetchOrgUsageData, fetchOrgs, fetchTeams, fetchTeamUsageData } = useApi();
 
   const [selectedUsage, setSelectedUsage] = useState<string>('Enterprises');
   const [enterprise, setEnterprise] = useState<string>('');
   const [org, setOrg] = useState<string>('');
   const [team, setTeam] = useState<string>('');
-
   const [data, setData] = useState<CopilotUsageData[]>([]);
-
   const [notification, setNotification] = useState<Notification>({
     message: undefined,
     type: 'success'
   });
-
-  if(!isLoggedIn) {
-    window.location.href = '/';
-  }
 
   useEffect(() => {
     function fetchData() {
@@ -96,9 +87,7 @@ export default function CopilotInsights() {
   return (
     <>
       <ToastNotification notification={notification} />
-      <Stack spacing={3} gap={2} direction={'row'} sx={{
-        marginBottom: 3
-      }}>
+      <Stack spacing={3} gap={1} direction={'row'}>
         <FormControl>
           <InputLabel id="usage-by-label">Usage By</InputLabel>
           <Select
@@ -120,6 +109,10 @@ export default function CopilotInsights() {
           getOptionLabel={(option) => option as string}
           onChange={(_, value) => setEnterprise(value as string)}
           isOptionEqualToValue={(option, value) => option === value}
+          onError={(error) => setNotification({
+            message: `Failed to fetch enterprises: ${(error as Error).message}`,
+            type: 'error'          
+          })}
         />)}
         {selectedUsage !== 'Enterprises' && (<AsyncAutocomplete
           label="Organizations"
@@ -127,6 +120,10 @@ export default function CopilotInsights() {
           getOptionLabel={(option) => option as string}
           onChange={(_, value) => setOrg(value as string)}
           isOptionEqualToValue={(option, value) => option === value}
+          onError={(error) => setNotification({
+            message: `Failed to fetch organizations: ${(error as Error).message}`,
+            type: 'error'          
+          })}
         />)}
         {selectedUsage === 'Teams' && (
           <AsyncAutocomplete
@@ -135,6 +132,10 @@ export default function CopilotInsights() {
             getOptionLabel={(option) => (option as Team).name as string}
             onChange={(_, value) => setTeam((value as Team).slug as string)}
             isOptionEqualToValue={(option, value) => option === value}
+            onError={(error) => setNotification({
+              message: `Failed to fetch teams: ${(error as Error).message}`,
+              type: 'error'          
+            })}
           />
         )}
       </Stack>

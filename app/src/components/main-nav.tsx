@@ -1,7 +1,8 @@
-import { Stack, Container, AppBar, Toolbar, Box, Button } from "@mui/material";
+import { Stack, Container, AppBar, Toolbar, Box, Button, IconButton } from "@mui/material";
 import GithubLoginButton from "./github-login-button";
-import { useGitHubAuth } from "../store/reducer/use-github-auth";
+import { useGitHubAuth } from "../hooks/use-github-auth";
 import { useNavigate } from "react-router-dom";
+import GitHubIcon from '@mui/icons-material/GitHub';
 
 export default function MainNav() {
     const { isLoggedIn } = useGitHubAuth();
@@ -24,9 +25,12 @@ export default function MainNav() {
                         spacing={2}
                         sx={{ alignItems: 'center', justifyContent: 'space-between', minHeight: '64px', px: 2 }}
                     >
+                        <IconButton onClick={() => navigate('/')}>
+                            <GitHubIcon fontSize="large"/>
+                        </IconButton>
                         {isLoggedIn && (<Box>
-                            <Button variant="text" onClick={() => navigate('copilot-insights')}>
-                                Copilot Insights
+                            <Button variant="text" onClick={() => navigate('dashboard')}>
+                                Dashboard
                             </Button>
                         </Box>)}
                         <Box sx={{

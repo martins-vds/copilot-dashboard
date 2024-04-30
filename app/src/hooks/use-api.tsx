@@ -1,4 +1,5 @@
-import { useGitHubAuth } from "../store/reducer/use-github-auth";
+import { User } from "@/types/User";
+import { useGitHubAuth } from "./use-github-auth";
 import { CopilotUsageData } from "@/types/CopilotUsageData";
 
 const doFetch = async (url: string, token: string) => {
@@ -42,6 +43,10 @@ export function useApi() {
         return await doFetch(`api/orgs/${org}/teams/${team}/copilot/usage`, token);
     }
 
+    async function fetchUser() : Promise<User> {
+        return await doFetch('api/user', token);    
+    }
+
     return {
         fetchEnterprises,
         fetchEnterpriseUsageData,
@@ -49,5 +54,6 @@ export function useApi() {
         fetchOrgUsageData,
         fetchTeams,
         fetchTeamUsageData,
+        fetchUser
     }
 }
