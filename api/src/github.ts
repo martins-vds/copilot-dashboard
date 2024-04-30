@@ -9,7 +9,7 @@ export const withErrorHandler = async (fn: () => Promise<any>) => {
         if (error instanceof RequestError) {
             return { body: JSON.stringify(error.message), headers: { 'Content-Type': 'application/json' }, status: error.status };
         } else {
-            throw error;
+            throw error;            
         }
     }
 }
@@ -31,7 +31,7 @@ export const createToken = async (code: string) => {
 
 function client(token: string){
     return new Octokit({
-        auth: `${token}`,
+        auth: token,
     });
 }
 

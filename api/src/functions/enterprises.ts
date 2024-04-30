@@ -6,11 +6,11 @@ import { getToken } from "../utils";
 export async function enterprises(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
   const token = getToken(request);
 
-  const {
-    data: { login },
-  } = await github.client(token).rest.users.getAuthenticated();
-
   return withErrorHandler(async () => {
+    const {
+      data: { login },
+    } = await github.client(token).rest.users.getAuthenticated();
+
     const response = await github.client(token).request("POST /graphql", {
       headers: {
         'X-GitHub-Api-Version': '2022-11-28'
