@@ -87,7 +87,9 @@ export default function Dashboard() {
   return (
     <>
       <ToastNotification notification={notification} />
-      <Stack spacing={3} gap={1} direction={'row'}>
+      <Stack spacing={1} gap={1} direction={'row'} sx={{
+        marginBottom: 2,      
+      }}>
         <FormControl>
           <InputLabel id="usage-by-label">Usage By</InputLabel>
           <Select
