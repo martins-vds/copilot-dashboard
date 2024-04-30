@@ -1,5 +1,6 @@
 import { app, HttpRequest, HttpResponseInit, input, InvocationContext } from "@azure/functions";
-import { github, withErrorHandler } from "../github";
+import { github } from "../github";
+import { withErrorHandler } from "../utils";
 import { getToken } from "../utils";
 
 
@@ -32,7 +33,7 @@ export async function enterprises(request: HttpRequest, context: InvocationConte
     const enterprises = response.data.data.user.enterprises.nodes.map((enterprise: any) => enterprise.slug);
 
     return { body: JSON.stringify(enterprises), headers: { 'Content-Type': 'application/json' } };
-  }, context.error);
+  }, context);
 };
 
 app.http('enterprises', {

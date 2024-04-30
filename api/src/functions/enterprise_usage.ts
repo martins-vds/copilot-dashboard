@@ -1,6 +1,6 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
-import { github, withErrorHandler } from "../github";
-import { RequestError } from "octokit";
+import { github } from "../github";
+import { withErrorHandler } from "../utils";
 import { getToken } from "../utils";
 
 export async function enterprise_usage(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
@@ -16,7 +16,7 @@ export async function enterprise_usage(request: HttpRequest, context: Invocation
         })
 
         return { body: JSON.stringify(response.data), headers: { 'Content-Type': 'application/json' } };
-    }, context.error);
+    }, context);
 };
 
 app.http('enterprise_usage', {

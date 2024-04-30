@@ -1,6 +1,7 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import { getToken } from "../utils";
-import { github, withErrorHandler } from "../github";
+import { github } from "../github";
+import { withErrorHandler } from "../utils";
 
 export async function user(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     const token = getToken(request);
@@ -9,7 +10,7 @@ export async function user(request: HttpRequest, context: InvocationContext): Pr
         const user = await github.client(token).rest.users.getAuthenticated();
 
         return { body: JSON.stringify(user.data), headers: { 'Content-Type': 'application/json' } };
-    }, context.error);
+    }, context);
 };
 
 app.http('user', {

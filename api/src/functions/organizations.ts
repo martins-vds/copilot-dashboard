@@ -1,5 +1,6 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
-import { github, withErrorHandler } from "../github";
+import { github } from "../github";
+import { withErrorHandler } from "../utils";
 import { getToken } from "../utils";
 
 
@@ -14,7 +15,7 @@ export async function organizations(request: HttpRequest, context: InvocationCon
         const organizations = response.map((org: any) => org.login)
 
         return { body: JSON.stringify(organizations), headers: { 'Content-Type': 'application/json' } };
-    }, context.error);
+    }, context);
 };
 
 app.http('organizations', {

@@ -1,22 +1,5 @@
-import { Octokit, RequestError } from "octokit";
+import { Octokit } from "octokit";
 import { github_config } from "./config";
-import { input } from "@azure/functions";
-
-export const withErrorHandler = async (fn: () => Promise<any>, onError?: (...args: any[]) => void) => {
-    try {
-        return await fn();
-    } catch (error) {
-        if (onError) {
-            onError(error);
-        }
-
-        if (error instanceof RequestError) {
-            return { body: JSON.stringify(error.message), headers: { 'Content-Type': 'application/json' }, status: error.status };
-        } else {
-            throw error;
-        }
-    }
-}
 
 export const createToken = async (code: string) => {
     const OAuthApp = await import("@octokit/oauth-app");

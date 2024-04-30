@@ -1,5 +1,4 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
-import { github_config } from "../config";
 import { createToken } from "../github";
 
 export async function github_oauth_token(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {

@@ -1,5 +1,6 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
-import { github, withErrorHandler } from "../github";
+import { github } from "../github";
+import { withErrorHandler } from "../utils";
 import { getToken } from "../utils";
 
 export async function teams(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
@@ -23,7 +24,7 @@ export async function teams(request: HttpRequest, context: InvocationContext): P
         })
     
         return { body: JSON.stringify(teams), headers: { 'Content-Type': 'application/json' } };
-    }, context.error);
+    }, context);
 };
 
 app.http('teams', {
