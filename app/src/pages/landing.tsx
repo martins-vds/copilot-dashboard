@@ -1,10 +1,8 @@
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import copilot from '../assets/copilot.png';
-import { useGitHubAuth } from '../hooks/use-github-auth';
 import Grid from '@mui/material/Unstable_Grid2';
 
 export default function Landing() {
-    const { user, isLoggedIn } = useGitHubAuth();
     return (
         <Grid container sx={{
             height: '80vh',    
