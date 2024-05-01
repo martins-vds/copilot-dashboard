@@ -1,5 +1,5 @@
 import { ChartProps } from "@/types/ChartProps";
-import { Card, CardHeader, Divider, CardContent, List, ListItem, ListItemText } from "@mui/material";
+import { Card, CardHeader, Divider, CardContent, List, ListItem, ListItemText, ListItemAvatar, Avatar } from "@mui/material";
 
 export default function PopularLanguages({ data, sx }: ChartProps) {
     const languageCounts: Record<string, number> = {};
@@ -25,15 +25,30 @@ export default function PopularLanguages({ data, sx }: ChartProps) {
     const popularLanguages: string[] = languageCountsArray.map(entry => entry.language);
 
     return (
-        <Card sx={sx} variant="outlined">
+        <Card sx={{
+            ...sx,
+            minHeight: 300,
+            maxHeight: 300
+        }} variant="outlined">
             <CardHeader
                 title="Popular Languages"
             />
             <Divider />
             <CardContent>
-                <List>
+                <List sx={{
+                    maxHeight: 200,
+                    overflowY: 'auto'                
+                }}>
                     {popularLanguages.map((language, index) => (
                         <ListItem divider={index < popularLanguages.length - 1} key={language}>
+                            <ListItemAvatar>
+                                <Avatar sx={{
+                                    backgroundColor: 'primary.main',
+                                    color: 'primary.contrastText'                                
+                                }}>
+                                    {index + 1}
+                                </Avatar>
+                            </ListItemAvatar>
                             <ListItemText primary={language} secondary={`Used ${languageCounts[language]} times`} />
                         </ListItem>
                     ))}

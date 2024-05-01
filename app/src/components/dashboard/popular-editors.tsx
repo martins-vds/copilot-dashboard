@@ -1,5 +1,5 @@
 import { ChartProps } from "@/types/ChartProps";
-import { Card, CardHeader, CardContent, Divider, List, ListItem, ListItemText } from "@mui/material";
+import { Card, CardHeader, CardContent, Divider, List, ListItem, ListItemText, ListItemAvatar, Avatar } from "@mui/material";
 
 export default function PopularEditors({ data, sx }: ChartProps) {
     const editorCounts: Record<string, number> = {};
@@ -22,15 +22,30 @@ export default function PopularEditors({ data, sx }: ChartProps) {
     const popularEditors: string[] = editorCountsArray.map(entry => entry.editor);
 
     return (
-        <Card sx={sx} variant="outlined">
+        <Card sx={{
+            ...sx,
+            minHeight: 300,
+            maxHeight: 300
+        }} variant="outlined">
             <CardHeader
                 title="Popular Editors"
             />
             <Divider />
             <CardContent>
-                <List>
+                <List sx={{
+                    maxHeight: 200,
+                    overflowY: 'auto'                
+                }}>
                     {popularEditors.map((editor, index) => (
                         <ListItem divider={index < popularEditors.length - 1} key={editor}>
+                            <ListItemAvatar>
+                                <Avatar sx={{
+                                    backgroundColor: 'primary.main',
+                                    color: 'primary.contrastText'                                
+                                }}>
+                                    {index + 1}
+                                </Avatar>
+                            </ListItemAvatar>
                             <ListItemText primary={editor} secondary={`Used ${editorCounts[editor]} times`} />
                         </ListItem>
                     ))}

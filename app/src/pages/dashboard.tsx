@@ -150,7 +150,9 @@ export default function Dashboard() {
           />
         )}
       </Stack>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} sx={{
+        marginBottom: 2      
+      }}>
         <Grid lg={6} sm={6} xs={12}>
           {/* Total Acceptances Line Chart */}
           <TotalAcceptances data={data} />
@@ -167,11 +169,11 @@ export default function Dashboard() {
 
         <Grid lg={3} sm={6} xs={12}>
           {/* Total Suggestions Line Chart */}
-          <PopularEditors data={data} />
+          <PopularEditors data={data}/>
         </Grid>
 
         <Grid lg={3} sm={6} xs={12}>
-          <PopularLanguages data={data} />
+          <PopularLanguages data={data}/>
         </Grid>
 
       </Grid>
