@@ -1,5 +1,5 @@
 import { Stack, Container, AppBar, Toolbar, Box, Button, IconButton } from "@mui/material";
-import GithubLoginButton from "./github-login-button";
+import GithubButton from "./github-button";
 import { useGitHubAuth } from "../hooks/use-github-auth";
 import { useNavigate } from "react-router-dom";
 import GitHubIcon from '@mui/icons-material/GitHub';
@@ -37,7 +37,7 @@ export default function MainNav() {
                             flexGrow: 1,
                         }}></Box>
                         <Stack sx={{ alignItems: 'center' }} direction="row" spacing={2}>
-                            <GithubLoginButton />
+                            <GithubButton />
                         </Stack>
                     </Stack>
                 </Container>

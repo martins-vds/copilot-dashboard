@@ -57,7 +57,7 @@ const ProfileMenu = ({ avatar_url, name, items }: ProfileMenuProps) => {
     )
 }
 
-export default function GithubLoginButton() {
+export default function GithubButton() {
     const { login, logout, isLoggedIn, user } = useGitHubAuth();
     const menuItems = [
         { label: "Logout", onClick: logout }
@@ -80,7 +80,7 @@ export default function GithubLoginButton() {
                 color="success"
                 startIcon={<GitHubIcon />}
             >
-                Sign in with GitHub
+                Sign in
             </Button>) : null}
             {user && <ProfileMenu name={user.name} avatar_url={user.avatar_url} onLogout={logout} items={menuItems} />}
         </>
