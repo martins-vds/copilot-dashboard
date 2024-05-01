@@ -19,7 +19,7 @@ export function useGitHubAuth() {
             await fetch("/api/github/logout", {
                 method: "POST",
                 headers: {
-                    Authorization: token,
+                    "X-GitHub-Token": token,
                 }
             });            
         } finally {
@@ -52,7 +52,7 @@ export function useGitHubAuth() {
     async function setUser(token: string) {
         const response = await fetch("/api/user", {
             headers: {
-                Authorization: token,
+                "X-GitHub-Token": token,
             },
         });
 

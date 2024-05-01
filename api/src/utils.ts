@@ -1,9 +1,9 @@
 import { HttpRequest } from "@azure/functions";
 
 export function getToken(request: HttpRequest) {
-    let token = request.headers.get('Authorization') || "";
+    let token = request.headers.get('X-GitHub-Token') || "";
 
-    token = token.replace("Bearer ", "").trim();
+    token = token.trim();
 
     return token;
 }

@@ -5,7 +5,7 @@ import { CopilotUsageData } from "@/types/CopilotUsageData";
 const doFetch = async (url: string, token: string) => {
     const response = await fetch(url, {
         headers: {
-            'Authorization': `${token}`
+            'X-GitHub-Token': token
         },
 
     });
