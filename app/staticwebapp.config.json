@@ -1,11 +1,5 @@
 {
-    "trailingSlash": "auto",
-    "routes": [
-        {
-            "route": "/api/*"            
-        }
-    ],
     "navigationFallback": {
-        "rewrite": "index.html"
+        "rewrite": "/index.html"
     }
 }
