@@ -11,6 +11,7 @@ export async function teams(request: HttpRequest, context: InvocationContext): P
 
         return { body: JSON.stringify(teams), headers: { 'Content-Type': 'application/json' } };
     } catch (error) {
+        context.error("Error getting teams", error);
         return { status: error.status, body: JSON.stringify({ message: error.message }), headers: { 'Content-Type': 'application/json' } };
     }
 };

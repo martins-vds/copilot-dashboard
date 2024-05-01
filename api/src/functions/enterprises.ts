@@ -11,6 +11,7 @@ export async function enterprises(request: HttpRequest, context: InvocationConte
 
     return { body: JSON.stringify(enterprises), headers: { 'Content-Type': 'application/json' } };
   } catch (error) {
+    context.error("Error getting enterprises", error);
     return { status: error.status, body: JSON.stringify({ message: error.message }), headers: { 'Content-Type': 'application/json' } };
   }
 };

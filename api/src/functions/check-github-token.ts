@@ -19,13 +19,13 @@ async function checkToken(request: HttpRequest, context: InvocationContext, next
     const token = getToken(request);
 
     if (!token) {
-        return { status: 401, body: 'Unauthorized' };
+        return { status: 401, body: 'Token not found' };
     }
 
     if (validateToken(token)) {
         return await next(request, context);
     } else {
-        return { status: 401, body: 'Unauthorized' };
+        return { status: 401, body: 'Invalid token' };
     }
 
 }

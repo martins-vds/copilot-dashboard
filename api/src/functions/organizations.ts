@@ -11,6 +11,7 @@ export async function organizations(request: HttpRequest, context: InvocationCon
 
         return { body: JSON.stringify(organizations), headers: { 'Content-Type': 'application/json' } };
     } catch (error) {
+        context.error("Error getting organizations", error);
         return { status: error.status, body: JSON.stringify({ message: error.message }), headers: { 'Content-Type': 'application/json' } };
     }
 };

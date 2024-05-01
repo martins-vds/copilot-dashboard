@@ -11,6 +11,7 @@ export async function enterprise_usage(request: HttpRequest, context: Invocation
 
         return { body: JSON.stringify(usage), headers: { 'Content-Type': 'application/json' } };
     } catch (error) {
+        context.error(`Error getting enterprise copilot usage`, error);
         return { status: error.status, body: JSON.stringify({ message: error.message }), headers: { 'Content-Type': 'application/json' } };
     }
 };

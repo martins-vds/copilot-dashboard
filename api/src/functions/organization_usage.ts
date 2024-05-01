@@ -11,6 +11,7 @@ export async function organization_usage(request: HttpRequest, context: Invocati
 
         return { body: JSON.stringify(usage), headers: { 'Content-Type': 'application/json' } };
     } catch (error) {
+        context.error(`Error getting organization copilot usage`, error);
         return { status: error.status, body: JSON.stringify({ message: error.message }), headers: { 'Content-Type': 'application/json' } };
     }
 };
