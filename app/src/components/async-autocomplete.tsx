@@ -15,7 +15,7 @@ export default function AsyncAutocomplete({ label, isOptionEqualToValue, getOpti
     const [options, setOptions] = useState<unknown[]>([]);
     const loading = open && options.length === 0;
 
-    useEffect(() => {
+    useEffect(() => {    
         let active = true;
 
         if (!loading) {
@@ -25,19 +25,22 @@ export default function AsyncAutocomplete({ label, isOptionEqualToValue, getOpti
         (async () => {
             try {
                 const newOptions = await loadOptions();
-    
+
                 if (active) {
                     setOptions([...newOptions]);
                 }
             } catch (error) {
-                if(onError) {
+                setOpen(false);
+                setOptions([]);
+
+                if (onError) {                    
                     onError(error);
                 }
             }
         })();
 
         return () => {
-            active = false;
+            active = false;            
         };
     }, [loading, loadOptions, onError]);
 

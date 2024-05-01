@@ -28,17 +28,20 @@ export default function Dashboard() {
   });
 
   useEffect(() => {
-    function fetchData() {
+    async function fetchData() {
       if (!enterprise || selectedUsage !== 'Enterprises') return;
 
-      fetchEnterpriseUsageData(enterprise)
-        .then(data => setData(data))
-        .catch((error) => setNotification(
-          {
+      try {
+        const data = await fetchEnterpriseUsageData(enterprise)
+        setData(data);
+      } catch (error) {
+        if (error instanceof Error) {
+          setNotification({
             message: `Failed to fetch usage data for enterprise '${enterprise}': ${error.message}`,
             type: 'error'
-          }
-        ));
+          });
+        }
+      }
     }
 
     fetchData();
@@ -47,17 +50,20 @@ export default function Dashboard() {
   }, [enterprise]);
 
   useEffect(() => {
-    function fetchData() {
+    async function fetchData() {
       if (!org || selectedUsage !== 'Organizations') return;
 
-      fetchOrgUsageData(org)
-        .then(data => setData(data))
-        .catch((error) => setNotification(
-          {
+      try {
+        const data = await fetchOrgUsageData(org)
+        setData(data);
+      } catch (error) {
+        if (error instanceof Error) {
+          setNotification({
             message: `Failed to fetch usage data for organization '${org}': ${error.message}`,
             type: 'error'
-          }
-        ));
+          });
+        }
+      }
     }
 
     fetchData();
@@ -66,17 +72,20 @@ export default function Dashboard() {
   }, [org]);
 
   useEffect(() => {
-    function fetchData() {
+    async function fetchData() {
       if (!org || !team) return;
 
-      fetchTeamUsageData(org, team)
-        .then(data => setData(data))
-        .catch((error) => setNotification(
-          {
-            message: `Failed to fetch usage data for team '${team}' in organization '${org}': ${error.message}`,
+      try {
+        const data = await fetchTeamUsageData(org, team)
+        setData(data);
+      } catch (error) {
+        if (error instanceof Error) {
+          setNotification({
+            message: `Failed to fetch usage data for team '${team}': ${error.message}`,
             type: 'error'
-          }
-        ));
+          });
+        }
+      }
     }
 
     fetchData();
@@ -88,7 +97,7 @@ export default function Dashboard() {
     <>
       <ToastNotification notification={notification} />
       <Stack spacing={1} gap={1} direction={'row'} sx={{
-        marginBottom: 2,      
+        marginBottom: 2,
       }}>
         <FormControl>
           <InputLabel id="usage-by-label">Usage By</InputLabel>
@@ -113,7 +122,7 @@ export default function Dashboard() {
           isOptionEqualToValue={(option, value) => option === value}
           onError={(error) => setNotification({
             message: `Failed to fetch enterprises: ${(error as Error).message}`,
-            type: 'error'          
+            type: 'error'
           })}
         />)}
         {selectedUsage !== 'Enterprises' && (<AsyncAutocomplete
@@ -124,7 +133,7 @@ export default function Dashboard() {
           isOptionEqualToValue={(option, value) => option === value}
           onError={(error) => setNotification({
             message: `Failed to fetch organizations: ${(error as Error).message}`,
-            type: 'error'          
+            type: 'error'
           })}
         />)}
         {selectedUsage === 'Teams' && (
@@ -136,7 +145,7 @@ export default function Dashboard() {
             isOptionEqualToValue={(option, value) => option === value}
             onError={(error) => setNotification({
               message: `Failed to fetch teams: ${(error as Error).message}`,
-              type: 'error'          
+              type: 'error'
             })}
           />
         )}

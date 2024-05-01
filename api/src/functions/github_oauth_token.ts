@@ -1,5 +1,5 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
-import { createToken } from "../github";
+import { github } from "../github";
 
 export async function github_oauth_token(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     const { code } = await request.json() as any;
@@ -8,7 +8,7 @@ export async function github_oauth_token(request: HttpRequest, context: Invocati
         return { status: 400, body: 'Bad request' };
     }
 
-    const token = await createToken(code);
+    const token = await github.createToken(code);
 
     return {
         body: JSON.stringify({

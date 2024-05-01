@@ -6,9 +6,10 @@ const doFetch = async (url: string, token: string) => {
     const response = await fetch(url, {
         headers: {
             'Authorization': `${token}`
-        }    
+        },
+
     });
-    
+
     if (!response.ok) {
         throw new Error(response.statusText);
     }
@@ -19,32 +20,32 @@ const doFetch = async (url: string, token: string) => {
 export function useApi() {
     const { token } = useGitHubAuth();
 
-    async function fetchEnterprises() : Promise<string[]> {
+    async function fetchEnterprises(): Promise<string[]> {
         return await doFetch('api/enterprises', token);
     }
 
-    async function fetchEnterpriseUsageData(enterprise: string) : Promise<CopilotUsageData[]> {
+    async function fetchEnterpriseUsageData(enterprise: string): Promise<CopilotUsageData[]> {
         return await doFetch(`api/enterprises/${enterprise}/copilot/usage`, token);
     }
 
-    async function fetchOrgUsageData(org: string) : Promise<CopilotUsageData[]> {
+    async function fetchOrgUsageData(org: string): Promise<CopilotUsageData[]> {
         return await doFetch(`api/orgs/${org}/copilot/usage`, token);
     }
 
-    async function fetchOrgs() : Promise<string[]> {
+    async function fetchOrgs(): Promise<string[]> {
         return await doFetch('api/orgs', token);
     }
 
-    async function fetchTeams(org: string) : Promise<string[]> {
+    async function fetchTeams(org: string): Promise<string[]> {
         return await doFetch(`api/orgs/${org}/teams`, token);
     }
 
-    async function fetchTeamUsageData(org: string, team: string) : Promise<CopilotUsageData[]> {
+    async function fetchTeamUsageData(org: string, team: string): Promise<CopilotUsageData[]> {
         return await doFetch(`api/orgs/${org}/teams/${team}/copilot/usage`, token);
     }
 
-    async function fetchUser() : Promise<User> {
-        return await doFetch('api/user', token);    
+    async function fetchUser(): Promise<User> {
+        return await doFetch('api/user', token);
     }
 
     return {

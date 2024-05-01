@@ -11,12 +11,21 @@ export function useGitHubAuth() {
     function login(redirect_url: string = "/") {
         const redirect_uri = encodeURIComponent(`${window.location.origin}${github_config.callback_url}`);
         dispatch({ type: "SET_REDIRECT_URL", payload: redirect_url });
-        window.location.href = `https://github.com/login/oauth/authorize?scope=copilot,manage_billing:copilot,admin:org,admin:enterprise,user&client_id=${github_config.client_id}&redirect_uri=${redirect_uri}`;
+        window.location.href = `/api/github/login?redirect_url=${redirect_uri}`;
     }
 
-    function logout() {
-        navigate("/");
-        dispatch({ type: "LOGOUT" });
+    async function logout() {
+        try {
+            await fetch("/api/github/logout", {
+                method: "POST",
+                headers: {
+                    Authorization: token,
+                }
+            });            
+        } finally {
+            dispatch({ type: "LOGOUT" });        
+            navigate("/");
+        }
     }
 
     async function createToken(code: string) {

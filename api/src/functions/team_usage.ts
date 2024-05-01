@@ -1,6 +1,5 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import { github } from "../github";
-import { withErrorHandler } from "../utils";
 import { getToken } from "../utils";
 
 export async function team_usage(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
@@ -9,17 +8,13 @@ export async function team_usage(request: HttpRequest, context: InvocationContex
     const org = request.params.org;
     const team_slug = request.params.team_slug;
 
-    return withErrorHandler(async () => {
-        const response = await github.client(token).request('GET /orgs/{org}/team/{team_slug}/copilot/usage', {
-            org: org,
-            team_slug: team_slug,
-            headers: {
-                'X-GitHub-Api-Version': '2022-11-28'
-            }
-        })
+    try {
+        const usage = await github.getTeamCopilotUsage(org, team_slug, token);
 
-        return { body: JSON.stringify(response.data), headers: { 'Content-Type': 'application/json' } };
-    }, context);
+        return { body: JSON.stringify(usage), headers: { 'Content-Type': 'application/json' } };
+    } catch (error) {
+        return { status: error.status, body: JSON.stringify({ message: error.message }), headers: { 'Content-Type': 'application/json' } };
+    }
 };
 
 app.http('team_usage', {

@@ -1,22 +1,18 @@
 import { app, HttpRequest, HttpResponseInit, InvocationContext } from "@azure/functions";
 import { github } from "../github";
-import { withErrorHandler } from "../utils";
 import { getToken } from "../utils";
 
 export async function enterprise_usage(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
     const token = getToken(request);
     const enterprise = request.params.enterprise;
 
-    return withErrorHandler(async () => {
-        const response = await github.client(token).request('GET /enterprises/{enterprise}/copilot/usage', {
-            enterprise: enterprise,
-            headers: {
-                'X-GitHub-Api-Version': '2022-11-28'
-            }
-        })
+    try {
+        const usage = await github.getEnterpriseCopilotUsage(enterprise, token);
 
-        return { body: JSON.stringify(response.data), headers: { 'Content-Type': 'application/json' } };
-    }, context);
+        return { body: JSON.stringify(usage), headers: { 'Content-Type': 'application/json' } };
+    } catch (error) {
+        return { status: error.status, body: JSON.stringify({ message: error.message }), headers: { 'Content-Type': 'application/json' } };
+    }
 };
 
 app.http('enterprise_usage', {
