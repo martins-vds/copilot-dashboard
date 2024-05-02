@@ -10,4 +10,5 @@ RUN curl https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > mic
     az bicep install && \
     npm install -g npm@latest && \
     npm install -g typescript && \
-    npm install -g @azure/static-web-apps-cli
+    npm install -g @azure/static-web-apps-cli && \
+    npm install -g npm-check-updates
