@@ -6,4 +6,5 @@ export interface GitHubState {
     user: User | null;    
     token: string;
     redirect_url: string;
+    isLoading: boolean;
 }

@@ -4,14 +4,15 @@ import { GitHubContext, GitHubDispatchContext } from "../store/reducer/github-au
 import { useNavigate } from "react-router-dom";
 
 export function useGitHubAuth() {
-    const { isLoggedIn, user, token, redirect_url } = useContext(GitHubContext);
+    const { isLoggedIn, user, token, redirect_url, isLoading } = useContext(GitHubContext);
     const dispatch = useContext(GitHubDispatchContext);
     const navigate = useNavigate();
 
-    function login(redirect_url: string = "/") {
+    async function login(redirect_url?: string) {
         const redirect_uri = encodeURIComponent(`${window.location.origin}${github_config.callback_url}`);
-        dispatch({ type: "SET_REDIRECT_URL", payload: redirect_url });
-        window.location.href = `/api/github/login?redirect_url=${redirect_uri}`;
+        dispatch({ type: "LOGIN_STARTED" });
+        dispatch({ type: "SET_REDIRECT_URL", payload: redirect_url ?? "/" });
+        window.location.assign(`/api/github/login?redirect_url=${redirect_uri}`);
     }
 
     async function logout() {
@@ -66,6 +67,7 @@ export function useGitHubAuth() {
 
     return {
         isLoggedIn,
+        isLoading,
         user,
         token,
         redirect_url,

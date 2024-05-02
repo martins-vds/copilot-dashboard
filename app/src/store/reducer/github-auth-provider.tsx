@@ -9,7 +9,8 @@ const initialState: GitHubState = {
     isLoggedIn: false,
     user: null,
     token: "",
-    redirect_url: "/"
+    redirect_url: "/",
+    isLoading: false
 };
 
 export const GitHubContext = createContext<GitHubState>({} as GitHubState);
@@ -40,10 +41,21 @@ export function GitHubAuthProvider({ children }: GitHubProviderProps) {
 
 function GitHubReducer(state: GitHubState, action: Action) {
     switch (action.type) {
+        case "LOGIN_STARTED": {
+            const newState = {
+                ...state,
+                isLoading: true
+            };
+
+            localStorage.setItem(state_key, JSON.stringify(newState))
+
+            return newState;
+        }
         case "LOGIN": {
             const newState = {
                 ...state,
                 isLoggedIn: action.payload.isLoggedIn,
+                isLoading: false,
                 user: action.payload.user
             };
 
@@ -53,27 +65,27 @@ function GitHubReducer(state: GitHubState, action: Action) {
         }
         case "LOGOUT": {
             localStorage.removeItem(state_key)
-            return {
-                ...state,
-                isLoggedIn: false,
-                user: null,
-                token: ""
-            };
+            return { ...initialState };
         }
         case "SET_TOKEN": {
             const newState = {
                 ...state,
                 isLoggedIn: true,
+                isLoading: false,
                 token: action.payload
             }
             localStorage.setItem(state_key, JSON.stringify(newState))
             return newState;
         }
         case "SET_REDIRECT_URL": {
-            return {
+            const newState = {
                 ...state,
                 redirect_url: action.payload
-            };
+            }
+
+            localStorage.setItem(state_key, JSON.stringify(newState))
+
+            return newState;
         }
         default:
             return state;

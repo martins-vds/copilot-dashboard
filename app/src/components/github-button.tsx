@@ -4,8 +4,8 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import { useState } from "react";
 
 interface ProfileMenuProps {
-    avatar_url: string;
-    name: string;
+    avatar_url?: string;
+    name?: string;
     items?: { label: string, onClick: () => void }[];
     onLogout?: () => void;
 }
@@ -25,7 +25,7 @@ const ProfileMenu = ({ avatar_url, name, items }: ProfileMenuProps) => {
         <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open Profile">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt={name} src={avatar_url} />
+                    <Avatar alt={name ?? "John Doe"} src={avatar_url} />
                 </IconButton>
             </Tooltip>
             <Menu
@@ -82,7 +82,7 @@ export default function GithubButton() {
             >
                 Sign in
             </Button>) : null}
-            {user && <ProfileMenu name={user.name} avatar_url={user.avatar_url} onLogout={logout} items={menuItems} />}
+            {isLoggedIn && <ProfileMenu name={user?.name} avatar_url={user?.avatar_url} onLogout={logout} items={menuItems} />}
         </>
     )
 }
