@@ -26,7 +26,7 @@ jobs:
           VITE_GITHUB_CLIENT_ID: ${{ secrets.GH_OAUTH_CLIENT_ID }}
           VITE_GITHUB_PROXY_URL: ${{ vars.GH_OAUTH_PROXY_URL }}
           VITE_GITHUB_CALLBACK_URL: ${{ vars.GH_OAUTH_CALLBACK_URL }}
-          VITE_APP_INSIGHTS_INSTRUMENTATION_KEY: ${{ secrests.APP_INSIGHTS_INSTRUMENTATION_KEY }}
+          VITE_APP_INSIGHTS_INSTRUMENTATION_KEY: ${{ secrets.APP_INSIGHTS_INSTRUMENTATION_KEY }}
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_RED_MUSHROOM_08AC64E1E }}
           repo_token: ${{ secrets.GITHUB_TOKEN }}
