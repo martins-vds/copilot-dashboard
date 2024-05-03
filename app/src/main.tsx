@@ -13,14 +13,18 @@ import { GitHubAuthProvider } from './store/reducer/github-auth-provider.tsx';
 import GitHubCallback from './pages/github-callback.tsx';
 import Landing from './pages/landing.tsx';
 import AuthenticationGuard from './components/auth/authentication-guard.tsx';
+import { configureTelemetry } from './components/telemetry/config.ts';
+import { Telemetry } from './components/telemetry/index.tsx';
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
     children: [
-      { index: true, element: <Landing /> },
-      { path: "dashboard", element: <AuthenticationGuard component={Dashboard}/> }
+      { index: true, element: <Telemetry component={Landing} /> },
+      {
+        path: "dashboard", element: <AuthenticationGuard component={Dashboard} />
+      }
     ],
   },
   {
@@ -31,6 +35,8 @@ const router = createBrowserRouter([
     ],
   }
 ]);
+
+configureTelemetry();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

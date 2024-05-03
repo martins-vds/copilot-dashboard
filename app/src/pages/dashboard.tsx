@@ -13,8 +13,9 @@ import TotalAcceptancesByLanguages from '../components/dashboard/total-acceptanc
 import PopularEditors from '../components/dashboard/popular-editors';
 import PopularLanguages from '../components/dashboard/popular-languages';
 import { usage_types } from '../types/usage-types';
+import { Telemetry } from '../components/telemetry';
 
-export default function Dashboard() {
+function RenderDashboard() {
   const { fetchEnterprises, fetchEnterpriseUsageData, fetchOrgUsageData, fetchOrgs, fetchTeams, fetchTeamUsageData } = useApi();
 
   const [selectedUsage, setSelectedUsage] = useState<string>('Enterprises');
@@ -179,4 +180,10 @@ export default function Dashboard() {
       </Grid>
     </>
   )
+}
+
+export default function Dashboard() {
+    return (
+      <Telemetry component={RenderDashboard} />
+    );
 }
